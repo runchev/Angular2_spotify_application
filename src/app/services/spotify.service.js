@@ -9,20 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var spotify_service_1 = require('./services/spotify.service');
-var AppComponent = (function () {
-    function AppComponent() {
+var http_1 = require('@angular/http');
+require('rxjs/add/operator/map');
+var SpotifyService = (function () {
+    function SpotifyService(_http) {
+        this._http = _http;
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'my-app',
-            templateUrl: "app.component.html",
-            providers: [spotify_service_1.SpotifyService]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    SpotifyService.prototype.searchMusic = function (searchString) {
+        this.searchUrl = 'https://api.spotify.com/v1/search?query=' + searchString +
+            '&offset=0&limit=20&type=artist&market=US';
+        return this._http.get(this.searchUrl).map(function (res) { return res.json(); });
+    };
+    SpotifyService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [http_1.Http])
+    ], SpotifyService);
+    return SpotifyService;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.SpotifyService = SpotifyService;
+//# sourceMappingURL=spotify.service.js.map
