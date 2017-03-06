@@ -9,29 +9,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var spotify_service_1 = require('../../services/spotify.service');
-var SearchComponent = (function () {
-    function SearchComponent(_spotifyService) {
+var ArtistComponent = (function () {
+    function ArtistComponent(_spotifyService, _route) {
         this._spotifyService = _spotifyService;
+        this._route = _route;
     }
-    SearchComponent.prototype.searchArtist = function () {
+    ArtistComponent.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.searchString) {
-            this._spotifyService.searchMusic(this.searchString).subscribe(function (result) {
-                _this.searchedResults = result.artists.items;
+        this._route.params
+            .map(function (params) { return params['id']; })
+            .subscribe(function (id) {
+            _this._spotifyService.getArtist(id)
+                .subscribe(function (result) {
+                _this.artist = result;
             });
-        }
-        this.searchedResults = null;
+            _this._spotifyService.getAlbums(id)
+                .subscribe(function (result) {
+                _this.albums = result.items;
+            });
+        });
     };
-    SearchComponent = __decorate([
+    ArtistComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'search',
-            templateUrl: "search.component.html",
+            templateUrl: "artist.component.html",
+            selector: 'artist'
         }), 
-        __metadata('design:paramtypes', [spotify_service_1.SpotifyService])
-    ], SearchComponent);
-    return SearchComponent;
+        __metadata('design:paramtypes', [spotify_service_1.SpotifyService, router_1.ActivatedRoute])
+    ], ArtistComponent);
+    return ArtistComponent;
 }());
-exports.SearchComponent = SearchComponent;
-//# sourceMappingURL=search.component.js.map
+exports.ArtistComponent = ArtistComponent;
+//# sourceMappingURL=artist.component.js.map

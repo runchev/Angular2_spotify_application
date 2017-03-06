@@ -9,29 +9,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var spotify_service_1 = require('../../services/spotify.service');
-var SearchComponent = (function () {
-    function SearchComponent(_spotifyService) {
+var AlbumComponent = (function () {
+    function AlbumComponent(_spotifyService, _route) {
         this._spotifyService = _spotifyService;
+        this._route = _route;
     }
-    SearchComponent.prototype.searchArtist = function () {
+    AlbumComponent.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.searchString) {
-            this._spotifyService.searchMusic(this.searchString).subscribe(function (result) {
-                _this.searchedResults = result.artists.items;
+        this._route.params
+            .map(function (params) { return params['id']; })
+            .subscribe(function (id) {
+            _this._spotifyService.getAlbum(id)
+                .subscribe(function (result) {
+                _this.album = result;
             });
-        }
-        this.searchedResults = null;
+        });
     };
-    SearchComponent = __decorate([
+    AlbumComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'search',
-            templateUrl: "search.component.html",
+            templateUrl: "album.component.html",
+            selector: 'album'
         }), 
-        __metadata('design:paramtypes', [spotify_service_1.SpotifyService])
-    ], SearchComponent);
-    return SearchComponent;
+        __metadata('design:paramtypes', [spotify_service_1.SpotifyService, router_1.ActivatedRoute])
+    ], AlbumComponent);
+    return AlbumComponent;
 }());
-exports.SearchComponent = SearchComponent;
-//# sourceMappingURL=search.component.js.map
+exports.AlbumComponent = AlbumComponent;
+//# sourceMappingURL=album.component.js.map

@@ -20,6 +20,18 @@ var SpotifyService = (function () {
             '&offset=0&limit=20&type=artist&market=US';
         return this._http.get(this.searchUrl).map(function (res) { return res.json(); });
     };
+    SpotifyService.prototype.getArtist = function (searchId) {
+        this.searchArtistUrl = 'https://api.spotify.com/v1/artists/' + searchId;
+        return this._http.get(this.searchArtistUrl).map(function (res) { return res.json(); });
+    };
+    SpotifyService.prototype.getAlbums = function (artistId) {
+        this.searchAlbumsUrl = 'https://api.spotify.com/v1/artists/' + artistId + '/albums';
+        return this._http.get(this.searchAlbumsUrl).map(function (res) { return res.json(); });
+    };
+    SpotifyService.prototype.getAlbum = function (albumId) {
+        this.searchAlbumUrl = 'https://api.spotify.com/v1/albums/' + albumId;
+        return this._http.get(this.searchAlbumUrl).map(function (res) { return res.json(); });
+    };
     SpotifyService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

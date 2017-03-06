@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {SpotifyService} from '../../services/spotify.service';
-
+import {Artist} from '../../models/artist';
 @Component({
     moduleId:module.id,
     selector: 'search',
@@ -8,10 +8,15 @@ import {SpotifyService} from '../../services/spotify.service';
 })
 export class SearchComponent  {
     private searchString:string;
+    private searchedResults:Artist[];
+
     constructor(private _spotifyService:SpotifyService) {}
     searchArtist(){
-        this._spotifyService.searchMusic(this.searchString).subscribe(result=>{
-            console.log(result);
-        });          
+        if(this.searchString){
+            this._spotifyService.searchMusic(this.searchString).subscribe(result=>{
+                this.searchedResults=result.artists.items;
+            });                
+        }
+        this.searchedResults = null;      
     }
 }
